@@ -1,10 +1,10 @@
-import Hello from "@/components/hello";
-import Image from "next/image";
+import Hello from "@/components"
+import Image from "next/image"
 
 export default function Home() {
   return (
     <div>
       <Hello />
     </div>
-  );
+  )
 }
