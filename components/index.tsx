@@ -153,7 +153,7 @@ const Hello = () => {
           System
         </h1>
         <div className="relative mt-[40px] w-full lg:mt-[85px] lg:flex lg:gap-[20px]">
-          <div className="flex h-[300px] w-full flex-col rounded-[20px] bg-white px-[20px] lg:h-[410px] lg:w-1/2">
+          <div className="flex h-[333px] w-full flex-col rounded-[20px] bg-white px-[20px] lg:h-[488px] lg:w-1/2">
             <div className="flex w-full items-center justify-between pt-[20px] lg:mt-[20px] lg:pt-0">
               <p className="text-[17px] font-semibold leading-[120%] text-ribbon-600 lg:text-[27px]">
                 QR Scanner
@@ -178,22 +178,25 @@ const Hello = () => {
                 )}
               </div>
             </div>
-            <div className="mt-[20px] flex h-[210px] w-full flex-col rounded-[10px] border-[1px] border-dashed border-[#737373] bg-[#F8F8F8] lg:h-[308px]">
+            <div className="mt-[20px] flex h-[245px] w-full flex-col rounded-[10px] border-[1px] border-dashed border-[#737373] bg-[#F8F8F8] lg:h-[388px]">
               <div className="my-auto flex justify-center">
                 {!isCameraActive && (
-                  <p className="text-[12px] font-normal leading-[120%]">
+                  <p className="text-[12px] font-normal leading-[120%] text-[#737373]">
                     click the scan button to start scanning
                   </p>
                 )}
 
                 {isCameraActive && (
-                  <video className="h-[305px] w-full" ref={videoRef}></video>
+                  <video
+                    className="h-auto w-[100%] rounded-[10px]"
+                    ref={videoRef}
+                  ></video>
                 )}
               </div>
             </div>
           </div>
 
-          <div className="mt-[20px] flex h-[300px] w-full flex-col rounded-[20px] bg-white px-[20px] lg:mt-0 lg:h-[410px] lg:w-1/2">
+          <div className="mt-[20px] flex h-[333px] w-full flex-col rounded-[20px] bg-white px-[20px] lg:mt-0 lg:h-[488px] lg:w-1/2">
             <div className="flex w-full items-center justify-between pt-[20px] lg:mt-[20px] lg:pt-0">
               <p className="text-[17px] font-semibold leading-[120%] text-ribbon-600 lg:text-[27px]">
                 Scan Result
@@ -222,15 +225,18 @@ const Hello = () => {
                 </div>
               </form>
             </div>
-            <div className="mt-[20px] flex h-[210px] w-full flex-col rounded-[10px] border-[1px] border-dashed border-[#737373] bg-[#F8F8F8] lg:h-[308px]">
+            <div className="mt-[20px] flex h-[245px] w-full flex-col rounded-[10px] border-[1px] border-[#737373] bg-[#F8F8F8] lg:h-[388px]">
               <div className="flex px-[20px]">
                 {!isDataShown && (
-                  <p className="mt-[20px] text-[12px] font-normal leading-[120%]">
+                  <p className="mt-[20px] text-[12px] font-normal leading-[120%] text-[#737373]">
                     Scan a QR code to view the results here.
                   </p>
                 )}
                 {isDataShown && (
-                  <p dangerouslySetInnerHTML={{ __html: msg }}></p>
+                  <p
+                    className="pt-[20px] text-[#737373]"
+                    dangerouslySetInnerHTML={{ __html: msg }}
+                  ></p>
                 )}
               </div>
             </div>
