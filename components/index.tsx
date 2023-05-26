@@ -130,7 +130,7 @@ const Hello = () => {
   return (
     <div className="h-[120vh] w-full bg-primary-600 lg:h-[100vh]">
       <div className="container mx-auto block px-6 lg:flex lg:w-full lg:flex-col">
-        <div className="absolute left-[0px] right-0 top-[560px] lg:top-[420px]">
+        <div className="absolute left-[0px] right-0 top-[560px] lg:top-[365px]">
           <Image
             src="/images/bubble-scan1.png"
             width={200}
@@ -145,7 +145,7 @@ const Hello = () => {
             width={200}
             height={200}
             alt="bubble"
-            className="w-[150px] lg:w-[600px]"
+            className="w-[150px] lg:w-[550px]"
           />
         </div>
         <h1 className="pt-[77px] text-center text-[21px] font-semibold leading-[120%] text-ribbon-600 lg:mt-[77px] lg:pt-0 lg:text-[36px]">
