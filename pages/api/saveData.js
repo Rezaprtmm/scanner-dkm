@@ -9,7 +9,7 @@ const CREDENTIALS_PATH = path.join(process.cwd(), "./credentials.json")
 
 module.exports = async function handler(req, res) {
   try {
-    const { name, email, inst, role } = req.body
+    const { name, email, inst, role, noreg } = req.body
     const now = new Date()
     const hrs = now.getHours()
     const mts = now.getMinutes()
@@ -93,7 +93,7 @@ module.exports = async function handler(req, res) {
     function writeData(auth) {
       const sheets = google.sheets({ version: "v4", auth })
       let values = [
-        [name, email, inst, role, regDate, stat],
+        [noreg, name, email, inst, role, regDate, stat],
         // Potential next row
       ]
       const resource = {
@@ -120,7 +120,99 @@ module.exports = async function handler(req, res) {
         }
       )
     }
-    authorize().then(writeData).catch(console.error)
+
+    function validate(auth) {
+      const sheets = google.sheets({ version: "v4", auth })
+      let val = "ada"
+      let val1 = false
+      sheets.spreadsheets.values.get(
+        {
+          spreadsheetId: "14S7erNn9Bqxog6x5_KhCAtybbDf5wshS16pJrE4ua2s",
+          range: "Sheet2",
+        },
+        (err, result) => {
+          if (err) {
+            console.log(err)
+            res.status(500).json({ message: "Error while searching data." })
+          } else {
+            const rows = result.data.values
+            const searchData = []
+
+            if (rows.length < 2) {
+              authorize().then(writeData).catch(console.error)
+              val1 = true
+              res.send(val1)
+            } else {
+              for (let i = 1; i < rows.length; i++) {
+                const row = rows[i]
+                const regNumV = row[0] // Kolom Name (kolom A)
+                const nameV = row[1] // Kolom Registration Number (kolom F)
+
+                if (nameV === name && regNumV === noreg) {
+                  res.send(val)
+                  break
+                }
+
+                if (i === rows.length - 1) {
+                  authorize().then(writeData).catch(console.error)
+                  searchData.push(row)
+                  val1 = true
+                  res.send(val1)
+                  break
+                }
+              }
+            }
+          }
+        }
+      )
+    }
+
+    function searchData(auth) {
+      const sheets = google.sheets({ version: "v4", auth })
+      let val = false
+      sheets.spreadsheets.values.get(
+        {
+          spreadsheetId: "14S7erNn9Bqxog6x5_KhCAtybbDf5wshS16pJrE4ua2s",
+          range: "Sheet1",
+        },
+        (err, result) => {
+          if (err) {
+            console.log(err)
+            res.status(500).json({ message: "Error while searching data." })
+          } else {
+            const rows = result.data.values
+
+            if (rows.length < 2) {
+              res.send(val)
+            } else {
+              for (let i = 1; i < rows.length; i++) {
+                const row = rows[i]
+                const nameS = row[0] // Kolom Name (kolom A)
+                const regNumS = row[5] // Kolom Registration Number (kolom F)
+
+                if (nameS === name && regNumS === noreg) {
+                  authorize().then(validate).catch(console.error)
+                  break
+                }
+
+                if (i === rows.length - 1) {
+                  console.log("data tidak ditemukan")
+                  res.send(val)
+                  break
+                }
+              }
+            }
+          }
+        }
+      )
+    }
+
+    authorize()
+      .then(searchData)
+      .catch((error) => {
+        console.error(error)
+        res.status(500).json({ message: "Error while searching data." })
+      })
   } catch (error) {
     console.error(error)
     console.log("Terjadi kesalahan saat menyimpan data")

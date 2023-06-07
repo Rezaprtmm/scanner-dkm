@@ -67,7 +67,7 @@ const Hello = () => {
         )
 
         if (code) {
-          setScannedData("," + code.data)
+          setScannedData("," + code.data + ",")
           setIsDataShown(true)
           setIsCameraActive(false)
         }
@@ -96,6 +96,7 @@ const Hello = () => {
   let email = split[3]
   let inst = split[4]
   let role = split[5]
+  let noreg = split[6]
   let msg = `Nama: ${name} <br> Email: ${email} <br> Institution: ${inst} <br> Role: ${role}`
 
   const handleSubmit = async (e: { preventDefault: () => void }) => {
@@ -109,14 +110,23 @@ const Hello = () => {
     ) {
       try {
         setIsDataShown(false)
-        toast.success("Absensi berhasil. Enjoy your time here!")
+        toast.warning("Mohon menunggu, data sedang divalidasi.")
         const response = await axios.post("/api/saveData", {
           name,
           email,
           inst,
           role,
+          noreg,
         })
-        console.log(response.data)
+        if (response.data === true) {
+          toast.success("Absensi berhasil! Selamat menikmati acara.")
+          console.log(response.data)
+        } else if (response.data === "ada") {
+          toast.warning("Absensi gagal! Anda sudah absen sebelumnya.")
+          console.log(response.data)
+        } else {
+          toast.warning("Absensi gagal! Data tidak ditemukan.")
+        }
       } catch (error) {
         console.error(error)
         toast.warning("Absensi gagal. Coba lagi.") // Handle any errors
